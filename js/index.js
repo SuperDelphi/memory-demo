@@ -253,7 +253,22 @@ class Game extends PIXI.Application {
         [...this.frontTextureNames, this.backTextureName].forEach(textureName => {
             this.loader.add(textureName);
         });
-        this.loader.load(callback);
+
+        // Display loading screen
+        this._showLoadingScreen();
+
+        this.loader.load(() => {
+            this._hideLoadingScreen();
+            callback();
+        });
+    }
+
+    _showLoadingScreen() {
+        console.log("Loading...");
+    }
+
+    _hideLoadingScreen() {
+        console.log("Finished!")
     }
 
     _getVerticalPadding() {

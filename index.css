@@ -40,7 +40,7 @@
 body {
     display: flex;
     margin: 0;
-    background-image: linear-gradient(to bottom, #2878ce, #1560ad);
+    background-color: #1b69ba;
 }
 
 #game-info {
@@ -60,6 +60,7 @@ body {
     text-align: center;
     position: relative;
     box-shadow: 0 4px 0 0 #5eaa17;
+    z-index: 1;
 }
 
 #game-info h1 span {
@@ -95,7 +96,7 @@ body {
     font-size: 1.7rem;
     z-index: 1;
     animation: win-fade-in 500ms 1 forwards;
-    display: block;
+    display: none; /* => block */
 }
 
 #win-banner h2 {
@@ -108,7 +109,7 @@ body {
     border-radius: 13px;
     padding: 0.8rem 3rem;
     font-size: 1.2rem;
-    display: inline-block;
+    display: none; /* => inline-block */
     margin-top: 3rem;
     cursor: pointer;
     animation: fade-in 300ms 1 forwards;
@@ -127,4 +128,35 @@ body {
     border-radius: 100px 0 0 0;
     background-image: linear-gradient(#e0ecfd, #cddff3);
     animation: fade-in 800ms 1 forwards;
+}
+
+/* Decoration */
+
+#top-deco, #bottom-deco {
+    position: absolute;
+    left: 0;
+    width: 100vw;
+    height: calc(8vh + 2.8rem);
+    background-color: #1e76cc;
+}
+
+#top-deco::after, #bottom-deco::after {
+    content: "";
+    position: absolute;
+    display: block;
+    width: 100vw;
+    height: 4vh;
+    background-color: #2283de;
+}
+
+#top-deco {
+    top: 0;
+}
+
+#bottom-deco {
+    bottom: 0;
+}
+
+#bottom-deco::after {
+    bottom: 0;
 }
