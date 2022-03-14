@@ -149,17 +149,24 @@ class Card extends PIXI.Container {
 }
 
 class Game extends PIXI.Application {
-    motifImages = [
-        "camembert.png",
-        "circle.png",
-        "crescent.png",
-        "heart.png",
-        "square.png",
-        "star.png"
+    frontTextureNames = [
+        "img/motifs/camembert.png",
+        "img/motifs/circle.png",
+        "img/motifs/crescent.png",
+        "img/motifs/heart.png",
+        "img/motifs/square.png",
+        "img/motifs/star.png"
     ];
+    backTextureName = "img/card_back.png";
+    soundNames = [
+        "sounds/card_slide1.mp3",
+        "sounds/card_flip1.mp3"
+    ];
+    loader;
+
     CARD_RATIO = 2.5 / 3.5; // Classical playing card ratio
     COLUMN_AMOUNT = 4;
-    ROW_AMOUNT = Math.ceil(this.motifImages.length * 2 / this.COLUMN_AMOUNT);
+    ROW_AMOUNT = Math.ceil(this.frontTextureNames.length * 2 / this.COLUMN_AMOUNT);
     GUTTER = 20; // In pixels
 
     _w;
@@ -186,8 +193,8 @@ class Game extends PIXI.Application {
         const canvas = document.getElementById("canvas");
         const _w = window.innerWidth * 0.7;
         const _h = window.innerHeight;
-
         // Create a PixiJS application
+
         super({
             antialias: true,
             view: canvas,
@@ -198,11 +205,13 @@ class Game extends PIXI.Application {
         });
 
         this.canvas = canvas;
+        this.loader = PIXI.Loader.shared;
         this._w = _w;
         this._h = _h;
 
         // Resize
         window.addEventListener("resize", () => {
+            console.log(this);
             this._w = window.innerWidth * 0.7;
             this._h = window.innerHeight;
             this.renderer.resize(_w, _h);
@@ -212,6 +221,8 @@ class Game extends PIXI.Application {
         this.playAgainBtn.addEventListener("click", () => {
             this.init();
         })
+
+        this._loadResources(this.init.bind(this));
     }
 
     init() {
@@ -238,28 +249,13 @@ class Game extends PIXI.Application {
         this.ticker.add(this._animate.bind(this));
     }
 
-    displayCards() {
-        // TODO: Improve later
-
-        for (let i = 0; i < this.ROW_AMOUNT; i++) { // ROWS
-            for (let j = 0; j < this.COLUMN_AMOUNT; j++) { // EACH CARD
-                const card = this.cards[i * this.COLUMN_AMOUNT + j];
-                const cardHeight = ((this.ROW_AMOUNT - 1) * this.GUTTER + 2 * this._getVerticalPadding() - this.screen.height) / -this.ROW_AMOUNT;
-                const cardWidth = cardHeight * this.CARD_RATIO; // Card width
-                const H_PADDING = (this.COLUMN_AMOUNT * cardWidth + (this.COLUMN_AMOUNT - 1) * this.GUTTER - this.screen.width) / -2; // Calculate the horizontal padding
-                const cardX = H_PADDING + j * cardWidth + j * this.GUTTER + (cardWidth / 2); // + (cardWidth / 2) compensates front/back middle anchor
-                const cardY = this._getVerticalPadding() + i * cardHeight + i * this.GUTTER + (cardHeight / 2); // + (cardHeight / 2) compensates front/back middle anchor
-
-                // Set the card position/dimensions
-                card.x = cardX;
-                card.y = cardY;
-                card.width = cardWidth;
-                card.height = cardHeight;
-
-                this.stage.addChild(card);
-            }
-        }
-    } // Called every frame
+    _loadResources(callback) {
+        // Load resources (with the shared loader)
+        [...this.frontTextureNames, this.backTextureName].forEach(textureName => {
+            this.loader.add(textureName);
+        });
+        this.loader.load(callback);
+    }
 
     _getVerticalPadding() {
         return this.renderer.height * 0.15;
@@ -272,12 +268,12 @@ class Game extends PIXI.Application {
 
     createCards() {
         const unshuffledCards = [];
-        const backTexture = PIXI.Texture.from("img/card_back.png");
+        const backTexture = this.loader.resources[this.backTextureName].texture;
 
         // Create the cards with the front and back sprites
-        this.motifImages.forEach(motif => {
+        this.frontTextureNames.forEach(motif => {
             for (let i = 0; i < 2; i++) { // Two cards
-                const frontSprite = PIXI.Sprite.from("img/motifs/" + motif);
+                const frontSprite = PIXI.Sprite.from(this.loader.resources[motif].texture);
                 const backSprite = PIXI.Sprite.from(backTexture);
                 const card = new Card(this, motif, frontSprite, backSprite);
 
@@ -302,10 +298,33 @@ class Game extends PIXI.Application {
         this.cards = [];
     }
 
+    displayCards() {
+        // TODO: Improve later
+
+        for (let i = 0; i < this.ROW_AMOUNT; i++) { // ROWS
+            for (let j = 0; j < this.COLUMN_AMOUNT; j++) { // EACH CARD
+                const card = this.cards[i * this.COLUMN_AMOUNT + j];
+                const cardHeight = ((this.ROW_AMOUNT - 1) * this.GUTTER + 2 * this._getVerticalPadding() - this.screen.height) / -this.ROW_AMOUNT;
+                const cardWidth = cardHeight * this.CARD_RATIO; // Card width
+                const H_PADDING = (this.COLUMN_AMOUNT * cardWidth + (this.COLUMN_AMOUNT - 1) * this.GUTTER - this.screen.width) / -2; // Calculate the horizontal padding
+                const cardX = H_PADDING + j * cardWidth + j * this.GUTTER + (cardWidth / 2); // + (cardWidth / 2) compensates front/back middle anchor
+                const cardY = this._getVerticalPadding() + i * cardHeight + i * this.GUTTER + (cardHeight / 2); // + (cardHeight / 2) compensates front/back middle anchor
+
+                // Set the card position/dimensions
+                card.x = cardX;
+                card.y = cardY;
+                card.width = cardWidth;
+                card.height = cardHeight;
+
+                this.stage.addChild(card);
+            }
+        }
+    } // Called every frame
+
     chooseCard(card) {
         if (this.selectedCards.length < 2) {
             // Play sound
-            const slideSound = new Audio("sounds/card_slide1.mp3");
+            const slideSound = new Audio(this.soundNames[0]);
             slideSound.volume = 0.2;
             slideSound.play();
 
@@ -332,9 +351,9 @@ class Game extends PIXI.Application {
                 } else { // If not...
                     setTimeout(() => {
                         // Play sound
-                        const flipSound = new Audio("sounds/card_flip1.mp3");
+                        const flipSound = new Audio(this.soundNames[1]);
                         flipSound.play();
-                    }, this.PAIR_FLIP_DELAY - 150);
+                    }, this.PAIR_FLIP_DELAY + 100);
 
                     this.selectedCards.forEach(card => {
                         Animator.flip(card, this.PAIR_FLIP_DELAY, () => { // Animation
@@ -355,4 +374,3 @@ class Game extends PIXI.Application {
 // Main program
 
 const game = new Game();
-game.init();
