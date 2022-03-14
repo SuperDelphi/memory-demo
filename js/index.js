@@ -211,10 +211,9 @@ class Game extends PIXI.Application {
 
         // Resize
         window.addEventListener("resize", () => {
-            console.log(this);
             this._w = window.innerWidth * 0.7;
             this._h = window.innerHeight;
-            this.renderer.resize(_w, _h);
+            this.renderer.resize(this._w, this._h);
         });
 
         // Play again button
@@ -309,7 +308,6 @@ class Game extends PIXI.Application {
                 const H_PADDING = (this.COLUMN_AMOUNT * cardWidth + (this.COLUMN_AMOUNT - 1) * this.GUTTER - this.screen.width) / -2; // Calculate the horizontal padding
                 const cardX = H_PADDING + j * cardWidth + j * this.GUTTER + (cardWidth / 2); // + (cardWidth / 2) compensates front/back middle anchor
                 const cardY = this._getVerticalPadding() + i * cardHeight + i * this.GUTTER + (cardHeight / 2); // + (cardHeight / 2) compensates front/back middle anchor
-
                 // Set the card position/dimensions
                 card.x = cardX;
                 card.y = cardY;
