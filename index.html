@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Pleyo - Jeu du Mémory</title>
+        <link rel="stylesheet" href="index.css">
+        <script src="js/lib/pixi.js"></script>
+        <script src="js/lib/tween.js"></script>
+        <script src="js/index.js" defer></script>
+    </head>
+    <body>
+        <div id="game-info">
+            <h1>Pleyo <span>Memory</span></h1>
+            <div class="info">
+                <h2>Paires trouvées</h2>
+                <span><span id="found-pairs">0</span><span>/<span id="pair-amount">6</span></span>
+            </div>
+            <div class="info">
+                <h2>Nombre de tentatives</h2>
+                <span id="attempts">0</span>
+            </div>
+            <div id="win-banner">
+                <h2>GAGNÉ !</h2>
+            </div>
+            <span id="play-again">Rejouer</span>
+        </div>
+        <canvas id="canvas"></canvas>
+    </body>
+</html>

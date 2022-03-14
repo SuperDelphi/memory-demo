@@ -1,0 +1,130 @@
+/* Fonts */
+
+@font-face {
+    font-family: "Hiragino";
+    src: url("fonts/hiragino-kaku-gothic-std-w8.otf") format("opentype");
+}
+
+/* Animations */
+
+@keyframes win-fade-in {
+    from {
+        opacity: 0;
+        transform: translate(-100px, 15px) skew(0deg, -4.2deg);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0px) skew(0deg, -4.2deg);
+    }
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+        transform: translateY(75px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0px);
+    }
+}
+
+/* CSS */
+
+* {
+    font-family: "Hiragino", serif;
+    color: white;
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    margin: 0;
+    background-image: linear-gradient(to bottom, #2878ce, #1560ad);
+}
+
+#game-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+    width: 30vw;
+    padding: 8vh 0;
+}
+
+#game-info h1 {
+    font-size: 1.7rem;
+    padding: 0.35rem 2rem;
+    margin-bottom: 2rem;
+    background-color: #90da4f;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 4px 0 0 #5eaa17;
+}
+
+#game-info h1 span {
+    color: #ffff21;
+}
+
+#game-info .info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+#game-info .info h2 {
+    font-size: 1.2rem;
+    margin-bottom: 0.25rem;
+}
+
+#game-info .info span {
+    font-size: 2.35rem;
+}
+
+#found-pairs {
+    color: #90da4f;
+}
+
+#win-banner {
+    text-align: center;
+    margin-top: 1rem;
+    background-color: #90da4f;
+    width: 110%;
+    transform: skew(0deg, -4.2deg);
+    font-size: 1.7rem;
+    z-index: 1;
+    animation: win-fade-in 500ms 1 forwards;
+    display: block;
+}
+
+#win-banner h2 {
+    margin: 1.75rem 0;
+    text-shadow: 0 5px 30px rgba(0, 0, 0, 0.32);
+}
+
+#play-again {
+    border: solid white 3px;
+    border-radius: 13px;
+    padding: 0.8rem 3rem;
+    font-size: 1.2rem;
+    display: inline-block;
+    margin-top: 3rem;
+    cursor: pointer;
+    animation: fade-in 300ms 1 forwards;
+}
+
+#play-again:hover {
+    background-color: rgba(255, 255, 255, 0.10);
+}
+
+#play-again:active {
+    background-color: rgba(255, 255, 255, 0.25);
+}
+
+#canvas {
+    display: block;
+    border-radius: 100px 0 0 0;
+    background-image: linear-gradient(#e0ecfd, #cddff3);
+    animation: fade-in 800ms 1 forwards;
+}
