@@ -79,11 +79,12 @@ class Card extends PIXI.Container {
     front;
     back;
 
+    backFilter;
     animating = false;
 
     RANDOM_ROTATION_ANGLE = Math.PI / 24;
 
-    constructor(name, front, back, x, y, width, height) {
+    constructor(name, front, back) {
         super();
         this.name = name;
 
@@ -105,6 +106,9 @@ class Card extends PIXI.Container {
 
         this.showFront(false); // Hidden by default
 
+        this.backFilter = new PIXI.filters.ColorMatrixFilter();
+        this.back.filters = [this.backFilter];
+
         // Interactivity
 
         this.interactive = true;
@@ -116,10 +120,10 @@ class Card extends PIXI.Container {
             }
         });
         this.on("pointerover", () => { // Fired when the mouse enters card boundaries
-            console.log("cc");
+            this.backFilter.brightness(1.15);
         });
         this.on("pointerout", () => { // Fired when the mouse leaves card boundaries
-            console.log("out");
+            this.backFilter.brightness(1);
         });
     }
 
@@ -242,8 +246,6 @@ function displayCards() {
 window.addEventListener("resize", () => {
     _w = window.innerWidth * 0.7;
     _h = window.innerHeight;
-
-    console.log(canvas.width, _h);
     app.renderer.resize(_w, _h);
 })
 
