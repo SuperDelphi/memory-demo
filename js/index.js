@@ -352,5 +352,7 @@ class Game extends PIXI.Application {
     }
 }
 
+// Main program
+
 const game = new Game();
 game.init();
