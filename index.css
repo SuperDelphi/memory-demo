@@ -186,6 +186,10 @@ body {
     background-color: #1b69ba;
 }
 
+#loading-screen span {
+    font-size: 1.4rem;
+}
+
 #loading-screen img {
     width: 5rem;
     animation: loading-jump 0.35s infinite alternate ease-in-out;
