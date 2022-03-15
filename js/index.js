@@ -196,8 +196,8 @@ class Game extends PIXI.Application {
         const canvas = document.getElementById("canvas");
         const _w = window.innerWidth * 0.7;
         const _h = window.innerHeight;
-        // Create a PixiJS application
 
+        // Create a PixiJS application
         super({
             antialias: true,
             view: canvas,
