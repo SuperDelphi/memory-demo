@@ -172,6 +172,7 @@ class Game extends PIXI.Application {
     _w;
     _h;
 
+    LOADING_FADE_DURATION = 250;
     PAIR_FLIP_DELAY = 700;
     PAIR_ROTATION_DELAY = 340;
 
@@ -188,6 +189,8 @@ class Game extends PIXI.Application {
     attemptsText = document.getElementById("attempts");
     winBanner = document.getElementById("win-banner");
     playAgainBtn = document.getElementById("play-again");
+    loadingScreen = document.getElementById("loading-screen");
+    loadingBar = document.getElementById("loading-bar");
 
     constructor() {
         const canvas = document.getElementById("canvas");
@@ -261,14 +264,30 @@ class Game extends PIXI.Application {
             this._hideLoadingScreen();
             callback();
         });
+
+        this.loader.onProgress.add(this._updateLoadingScreen.bind(this)); // Call a function for each resource loaded
     }
 
     _showLoadingScreen() {
         console.log("Loading...");
     }
 
+    _updateLoadingScreen() {
+        this.loadingBar.style.width = Math.round(this.loader.progress) + "vw";
+    }
+
     _hideLoadingScreen() {
-        console.log("Finished!")
+        const disappearTween = new TWEEN.Tween({opacity: 1});
+        disappearTween
+            .to({opacity: 0}, this.LOADING_FADE_DURATION)
+            .onUpdate(obj => {
+                this.loadingScreen.style.opacity = obj.opacity;
+            })
+            .onComplete(() => {
+                this.loadingScreen.style.display = "none";
+            })
+            .delay(700);
+        disappearTween.start();
     }
 
     _getVerticalPadding() {
