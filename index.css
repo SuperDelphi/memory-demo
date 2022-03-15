@@ -1,8 +1,8 @@
 /* Fonts */
 
 @font-face {
-    font-family: "Hiragino";
-    src: url("fonts/hiragino-kaku-gothic-std-w8.otf") format("opentype");
+    font-family: "Fredoka";
+    src: url("fonts/Fredoka-SemiBold.ttf") format("truetype");
 }
 
 /* Animations */
@@ -41,7 +41,7 @@
 /* CSS */
 
 * {
-    font-family: "Hiragino", serif;
+    font-family: "Fredoka", serif;
     color: white;
     box-sizing: border-box;
 }
@@ -62,7 +62,7 @@ body {
 }
 
 #game-info h1 {
-    font-size: 1.7rem;
+    font-size: 1.85rem;
     padding: 0.35rem 2rem;
     margin-bottom: 2rem;
     background-color: #90da4f;
@@ -84,12 +84,12 @@ body {
 }
 
 #game-info .info h2 {
-    font-size: 1.2rem;
+    font-size: 1.35rem;
     margin-bottom: 0.25rem;
 }
 
 #game-info .info span {
-    font-size: 2.35rem;
+    font-size: 2.5rem;
 }
 
 #found-pairs {
